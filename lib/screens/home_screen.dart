@@ -1,9 +1,6 @@
 import 'package:TestApp/data/user.dart';
 import 'package:TestApp/widgets/cardUssers.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -13,33 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  User user;
-  Future<List<User>> _getUsers() async {
-    var data = await http.get("https://jsonplaceholder.typicode.com/users");
-
-    var jsonData = json.decode(data.body);
-
-    List<User> users = [];
-
-    for (var u in jsonData) {
-      User user = User(
-          u["id"],
-          u["username"],
-          u["name"],
-          u["email"],
-          u["phone"],
-          u["website"],
-          u["address"]["city"],
-          u["address"]["street"],
-          u["company"]["name"],
-          u["company"]["bs"],
-          u["company"]["catchPhrase"]);
-      users.add(user);
-    }
-
-    return users;
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Container(
           child: FutureBuilder(
-            future: _getUsers(),
+            future: getUsers(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Container(

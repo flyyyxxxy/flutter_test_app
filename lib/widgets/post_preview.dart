@@ -1,9 +1,7 @@
 import 'package:TestApp/data/post..dart';
+import 'package:TestApp/screens/post_detail.dart';
 import 'package:TestApp/screens/post_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 
 class PostPreview extends StatefulWidget {
   PostPreview({Key key, this.userId, this.username}) : super(key: key);
@@ -14,26 +12,12 @@ class PostPreview extends StatefulWidget {
 }
 
 class _PostPreviewState extends State<PostPreview> {
-  Post post;
-  Future _getPost() async {
-    var data = await http.get(
-        "https://jsonplaceholder.typicode.com/posts?userId=${widget.userId}");
-    var jsonData = json.decode(data.body);
-    List<Post> posts = [];
-
-    for (var u in jsonData) {
-      Post post = Post(u["userId"], u["id"], u["title"], u["body"]);
-      posts.add(post);
-    }
-    return posts;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FutureBuilder(
-            future: _getPost(),
+            future: getPost(widget.userId),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Container(
@@ -47,6 +31,15 @@ class _PostPreviewState extends State<PostPreview> {
                   children: [
                     Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return PostDetailScreen(
+                                title: snapshot.data[1].title,
+                                body: snapshot.data[1].body,
+                                postId: snapshot.data[1].id);
+                          }));
+                        },
                         title: Text('${snapshot.data[1].title}',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w300)),
@@ -63,6 +56,15 @@ class _PostPreviewState extends State<PostPreview> {
                     ),
                     Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return PostDetailScreen(
+                                title: snapshot.data[2].title,
+                                body: snapshot.data[2].body,
+                                postId: snapshot.data[2].id);
+                          }));
+                        },
                         title: Text('${snapshot.data[2].title}',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w300)),
@@ -77,6 +79,15 @@ class _PostPreviewState extends State<PostPreview> {
                     ),
                     Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return PostDetailScreen(
+                                title: snapshot.data[3].title,
+                                body: snapshot.data[3].body,
+                                postId: snapshot.data[3].id);
+                          }));
+                        },
                         title: Text('${snapshot.data[3].title}',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w300)),
@@ -95,7 +106,7 @@ class _PostPreviewState extends State<PostPreview> {
                             MaterialPageRoute(builder: (context) {
                           return PostScreen(
                             username: widget.username,
-                            post: snapshot.data[1],
+                            userId: widget.userId,
                           );
                         }));
                       },

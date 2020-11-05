@@ -1,5 +1,4 @@
 import 'package:TestApp/data/user.dart';
-import 'package:TestApp/screens/post_screen.dart';
 import 'package:TestApp/widgets/informationUser.dart';
 import 'package:TestApp/widgets/post_preview.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ class _UserPageState extends State<UserPage> {
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [
+            
             InformationUser(
               user: widget.user,
             ),
