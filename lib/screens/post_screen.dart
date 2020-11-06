@@ -44,6 +44,7 @@ class _PostScreenState extends State<PostScreen> {
                       },
                       title: Text(snapshot.data[index].title),
                       subtitle: Text(snapshot.data[index].body),
+                      trailing: Icon(Icons.comment_sharp),
                     ),
                   ),
                 );
